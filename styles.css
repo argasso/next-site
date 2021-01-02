@@ -1,0 +1,22 @@
+@tailwind base;
+
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  a {
+    @apply text-red-700 hover:underline;
+  }
+  p {
+    @apply mb-2;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
