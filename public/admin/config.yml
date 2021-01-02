@@ -29,10 +29,10 @@ collections:
           required: false,
         }
       - { label: "Beksrivning", name: "body", widget: "markdown", required: false, }
-  - name: "authors"
+  - name: "foerfattare"
     label: "Författare"
     label_singular: "Författare"
-    folder: "content/authors"
+    folder: "content/foerfattare"
     create: true
     slug: "{{slug}}"
     identifier_field: name
@@ -46,10 +46,10 @@ collections:
         }
       - { label: "Porträtt", name: "image", widget: "image" }
       - { label: "Beskrivning", name: "body", widget: "markdown" }
-  - name: "books"
+  - name: "boecker"
     label: "Böcker"
     label_singular: "Bok"
-    folder: "content/books"
+    folder: "content/boecker"
     create: true
     slug: "{{slug}}"
     fields:
@@ -58,7 +58,7 @@ collections:
           label: "Författare",
           name: "author",
           widget: "relation",
-          collection: "authors",
+          collection: "foerfattare",
           searchFields: ["name"],
           valueField: "name",
           displayFields: ["name"],
@@ -204,8 +204,9 @@ collections:
               widget: "string",
               required: false,
             }
-  - name: "pages"
-    label: "Pages"
+  - name: "sidor"
+    label: "Sidor"
+    label_singular: "Sida"
     files:
       - label: "Startsida"
         name: "index"
@@ -227,7 +228,7 @@ collections:
                   label: Bok,
                   name: book,
                   widget: relation,
-                  collection: books,
+                  collection: boecker,
                   searchFields: ["title"],
                   valueField: title,
                 }
@@ -235,7 +236,7 @@ collections:
   - name: information
     label: Informationssidor
     label_singular: 'Informationssida'
-    folder: src/pages/information
+    folder: pages/information
     create: true
     # adding a nested object will show the collection folder structure
     nested:
