@@ -36,6 +36,8 @@ collections:
     create: true
     slug: "{{slug}}"
     identifier_field: name
+    media_folder: '{{media_folder}}/foerfattare'
+    public_folder: '{{public_folder}}/foerfattare'
     fields:
       - { label: "Namn", name: "name", widget: "string" }
       - {
@@ -52,6 +54,8 @@ collections:
     folder: "content/boecker"
     create: true
     slug: "{{slug}}"
+    media_folder: '{{media_folder}}/boecker'
+    public_folder: '{{public_folder}}/boecker'
     fields:
       - { label: "Titel", name: "title", widget: "string" }
       - {

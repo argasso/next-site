@@ -6,7 +6,7 @@ isbn: 978-91-87667-52-7
 price: 93
 published: true
 discontinued: false
-image: /uploads/b-angel-i-venedig-9789187667527.jpg
+image: /uploads/boecker/angel-i-venedig-9789187667527.jpg
 shortDescription: >-
   Venedig, 1571. På det stora skeppsvarvet Arsenalen hämtar Luca vatten, hugger
   ved och tänder brasor åt båtbyggarna. Medan han arbetar drömmer han om en
@@ -20,6 +20,7 @@ translationDetails:
   translator: Helena Olsson
   originalTitle: Angel of Venice
 ---
+
 Venedig, 1571. På det stora skeppsvarvet Arsenalen hämtar Luca vatten, hugger ved och tänder brasor åt båtbyggarna. Medan han arbetar drömmer han om en flicka med gyllene hår som en ängels och hud lika mjuk som en vit persika.
 
 Men Venedig rustar sig för krig – krig mot det mäktiga Ottomanska riket – och snart bordar Luca skeppet Ängeln för att göra sin plikt.
