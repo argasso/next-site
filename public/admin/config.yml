@@ -1,0 +1,253 @@
+backend:
+  name: git-gateway
+  branch: master
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
+collections:
+  - name: "kategorier"
+    label: "Kategorier"
+    label_singular: "Kategori"
+    folder: "content/kategorier"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publicerad", name: "published", widget: "boolean", default: true }
+      - { label: "Bild", name: "thumbnail", widget: "image", required: false, }
+      - {
+          label: Underkategori till,
+          name: parent,
+          widget: relation,
+          collection: kategorier,
+          searchFields: ["title"],
+          valueField: {{slug}},
+          required: false,
+        }
+      - { label: "Beksrivning", name: "body", widget: "markdown", required: false, }
+  - name: "authors"
+    label: "Författare"
+    label_singular: "Författare"
+    folder: "content/authors"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: name
+    fields:
+      - { label: "Namn", name: "name", widget: "string" }
+      - {
+          label: "Publicerad",
+          name: "published",
+          widget: "boolean",
+          required: false,
+        }
+      - { label: "Porträtt", name: "image", widget: "image" }
+      - { label: "Beskrivning", name: "body", widget: "markdown" }
+  - name: "books"
+    label: "Böcker"
+    label_singular: "Bok"
+    folder: "content/books"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - {
+          label: "Författare",
+          name: "author",
+          widget: "relation",
+          collection: "authors",
+          searchFields: ["name"],
+          valueField: "name",
+          displayFields: ["name"],
+          multiple: true,
+        }
+      - {
+          label: "ISBN",
+          name: "isbn",
+          widget: "string",
+          pattern:
+            [
+              "[0-9]*[-| ][0-9]*[-| ][0-9]*[-| ][0-9]*[-| ][0-9]*",
+              "Must be ISBN format",
+            ],
+        }
+      - {
+          label: "Pris",
+          name: "price",
+          widget: "number",
+          valueType: "int",
+          min: 1,
+          max: 999,
+          required: false,
+        }
+      - {
+          label: "Publicerad",
+          name: "published",
+          widget: "boolean",
+          required: false,
+        }
+      - {
+          label: "Utgått",
+          name: "discontinued",
+          widget: "boolean",
+          required: false,
+        }
+      - { label: "Omslag", name: "image", widget: "image" }
+      - {
+          label: "Kort Beskrivning",
+          name: "shortDescription",
+          widget: "text",
+          required: false,
+        }
+      - { label: "Fullständig Beskrivning", name: "body", widget: "markdown" }
+      - label: "Detaljer"
+        hint: "Information som visas i en faktaruta."
+        name: "generalDetails"
+        widget: "object"
+        required: false
+        fields:
+          - {
+              label: "Illustrationer",
+              name: "illustrations",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Manusbearbetning",
+              name: "manuscript",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Utgivningsmånad",
+              name: "publishMonth",
+              widget: "date",
+              format: "MMM -YY",
+              required: false,
+            }
+          - {
+              label: "Bindning",
+              name: "binding",
+              widget: "select",
+              options:
+                [
+                  "Kartonnage",
+                  "Häftad",
+                  "Inbunden",
+                  "Flexband",
+                  "Danskt band",
+                  "CD-bok",
+                ],
+              required: false,
+            }
+          - {
+              label: "Rekommenderad ålder",
+              name: "age",
+              widget: "number",
+              valueType: "int",
+              min: 1,
+              max: 99,
+              required: false,
+            }
+          - {
+              label: "Antal sidor",
+              name: "numPages",
+              widget: "number",
+              valueType: "int",
+              min: 1,
+              max: 1000,
+              required: false,
+            }
+      - label: "Översatt bok"
+        name: "translationDetails"
+        hint: "Extra information för översatta böcker, visas i faktarutan."
+        widget: "object"
+        required: false
+        fields:
+          - {
+              label: "Översättare",
+              name: "translator",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Orginaltitel",
+              name: "originalTitle",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Innehåller",
+              hint: "T.ex. antal cd, dvs Innehåller: 2 cd.",
+              name: "contains",
+              widget: "string",
+              required: false,
+            }
+      - label: "Ljudbok"
+        name: "audioDetails"
+        hint: "Extra information för översatta böcker, visas i faktarutan."
+        widget: "object"
+        required: false
+        fields:
+          - {
+              label: "Speltid",
+              name: "duration",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Uppläsare",
+              name: "reciter",
+              widget: "string",
+              required: false,
+            }
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Startsida"
+        name: "index"
+        file: "content/index.md"
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Intro, name: intro, widget: string }
+          - label: Banners
+            name: banners
+            widget: list
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Bild, name: image, widget: image }
+          - label: Kommande
+            name: kommande
+            widget: list
+            fields:
+              - {
+                  label: Bok,
+                  name: book,
+                  widget: relation,
+                  collection: books,
+                  searchFields: ["title"],
+                  valueField: title,
+                }
+              - { label: Text, name: text, widget: markdown }
+  - name: information
+    label: Informationssidor
+    label_singular: 'Informationssida'
+    folder: src/pages/information
+    create: true
+    # adding a nested object will show the collection folder structure
+    nested:
+      depth: 100 # max depth to show in the collection tree
+      summary: '{{title}}' # optional summary for a tree node, defaults to the inferred title field
+    fields:
+      - label: Titel
+        name: title
+        widget: string
+      - label: Beskrivning
+        name: body
+        widget: markdown
+    # adding a meta object with a path property allows editing the path of entries
+    # moving an existing entry will move the entire sub tree of the entry to the new location
+    meta: { path: { widget: string, label: 'Path', index_file: 'index' } }
