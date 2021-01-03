@@ -24,8 +24,8 @@ collections:
           name: parent,
           widget: relation,
           collection: kategorier,
-          searchFields: ["title"],
-          valueField: "{{slug}}",
+          search_fields: ["title"],
+          value_field: "{{slug}}",
           required: false,
         }
       - { label: "Beksrivning", name: "body", widget: "markdown", required: false, }
@@ -64,9 +64,9 @@ collections:
           name: "author",
           widget: "relation",
           collection: "foerfattare",
-          searchFields: ["name"],
-          valueField: "{{slug}}",
-          displayFields: ["name"],
+          search_fields: ["name"],
+          value_field: "{{slug}}",
+          display_fields: ["name"],
           multiple: true,
         }
       - {
@@ -83,7 +83,7 @@ collections:
           label: "Pris",
           name: "price",
           widget: "number",
-          valueType: "int",
+          value_type: "int",
           min: 1,
           max: 999,
           required: false,
@@ -152,7 +152,7 @@ collections:
               label: "Rekommenderad ålder",
               name: "age",
               widget: "number",
-              valueType: "int",
+              value_type: "int",
               min: 1,
               max: 99,
               required: false,
@@ -161,7 +161,7 @@ collections:
               label: "Antal sidor",
               name: "numPages",
               widget: "number",
-              valueType: "int",
+              value_type: "int",
               min: 1,
               max: 1000,
               required: false,
@@ -234,8 +234,8 @@ collections:
                   name: book,
                   widget: relation,
                   collection: boecker,
-                  searchFields: ["title"],
-                  valueField: title,
+                  search_fields: ["title"],
+                  value_field: title,
                 }
               - { label: Text, name: text, widget: markdown }
   - name: information
