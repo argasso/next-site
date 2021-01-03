@@ -1,7 +1,7 @@
 ---
 title: Ängel i Venedig
 author:
-  - Mary Hoffman
+  - mary-hoffman
 isbn: 978-91-87667-52-7
 price: 93
 published: true

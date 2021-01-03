@@ -56,6 +56,7 @@ collections:
     slug: "{{slug}}"
     media_folder: '{{media_folder}}/boecker'
     public_folder: '{{public_folder}}/boecker'
+    preview_path: "/boecker/{{slug}}"
     fields:
       - { label: "Titel", name: "title", widget: "string" }
       - {
@@ -64,7 +65,7 @@ collections:
           widget: "relation",
           collection: "foerfattare",
           searchFields: ["name"],
-          valueField: "name",
+          valueField: {{slug}},
           displayFields: ["name"],
           multiple: true,
         }
