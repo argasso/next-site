@@ -1,0 +1,75 @@
+import fs from 'fs'
+import { join } from 'path'
+import matter from 'gray-matter'
+import { Author, Book, ContentWithImage } from '../interfaces'
+import sizeOf from 'image-size'
+
+const SIZE_LIMIT = -13 //
+
+export type Content =
+  | {
+      type: 'boecker'
+      data: Book
+      content: string
+      slug: string
+    }
+  | {
+      type: 'foerfattare'
+      data: Author
+      content: string
+      slug: string
+    }
+
+type ContentType = Content['type']
+type ExcludeTypeField<A> = { [K in Exclude<keyof A, 'type'>]: A[K] }
+export type ExtractActionParameters<T> = ExcludeTypeField<
+  Extract<Content, { type: T }>
+>
+
+export function listContent<T extends ContentType>(
+  type: T
+): ExtractActionParameters<T>[] {
+  return listSlugs(type).map((slug) => getContent(type, slug))
+}
+
+function hasImage(content: any): content is ContentWithImage {
+  return (content as ContentWithImage).image !== undefined
+}
+
+export function getContent<T extends ContentType>(
+  type: T,
+  slug?: string | string[]
+): ExtractActionParameters<T> {
+  const singleSlug = Array.isArray(slug) ? slug?.[0] : slug
+  const filePath = absolutePath(type, `${singleSlug}.md`)
+  const fileContents = fs.readFileSync(filePath, 'utf8')
+  const { data, content } = matter(fileContents)
+
+  if (hasImage(data) && data.image) {
+    const imagePath = join('.', 'public', data.image)
+    if (fs.existsSync(imagePath)) {
+      const { width, height } = sizeOf(imagePath)
+      data.imageWidth = width
+      data.imageHeight = height
+      console.log(data.image, width, height)
+    }
+  }
+
+  return {
+    data,
+    content,
+    slug: singleSlug,
+  } as ExtractActionParameters<T>
+}
+
+function absolutePath(type: ContentType, ...pathSegments: string[]) {
+  return join(process.cwd(), 'content', type, ...pathSegments)
+}
+
+export function listSlugs(type: ContentType) {
+  const path = absolutePath(type)
+  return fs
+    .readdirSync(path)
+    .slice(SIZE_LIMIT)
+    .map((fileName) => fileName.replace(/\.md$/, ''))
+}
