@@ -129,8 +129,9 @@ collections:
           - {
               label: "Utgivningsmånad",
               name: "publishMonth",
-              widget: "date",
+              widget: "datetime",
               format: "MMM -YY",
+              time_format: false,
               required: false,
             }
           - {
