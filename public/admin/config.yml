@@ -25,7 +25,7 @@ collections:
           widget: relation,
           collection: kategorier,
           searchFields: ["title"],
-          valueField: {{slug}},
+          valueField: "{{slug}}",
           required: false,
         }
       - { label: "Beksrivning", name: "body", widget: "markdown", required: false, }
@@ -65,7 +65,7 @@ collections:
           widget: "relation",
           collection: "foerfattare",
           searchFields: ["name"],
-          valueField: {{slug}},
+          valueField: "{{slug}}",
           displayFields: ["name"],
           multiple: true,
         }
