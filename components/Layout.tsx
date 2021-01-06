@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import TopNav from './TopNav'
-import Breadcrumbs from './Breadcrumbs'
-import Logo from './Logo'
 import { title as argassoTitle } from '../siteconfig.json'
+import Breadcrumbs from './Breadcrumbs'
+import TopNav from './TopNav'
+import Logo from './Logo'
 import Link from './Link'
 
 type Props = {
@@ -23,9 +23,9 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
 
     <TopNav />
 
-    <header className="bg-red-800 bg-gradient-to-b from-red-700">
+    <header className="bg-red-800">
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extralight leading-tight text-red-50 mb-28">
+        <h1 className="text-3xl px-3 font-extralight leading-tight text-red-100 mb-28">
           {title}
         </h1>
       </div>
@@ -33,11 +33,11 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
 
     <main>
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 -mt-32">
-        <div className="bg-white shadow rounded-lg px-4 py-6">
+        <div className="bg-white shadow rounded-lg p-4 pt-2">
           <div>
-            <Breadcrumbs className="text-gray-500" rootName="Argasso" />
+            <Breadcrumbs className="text-gray-400" rootName="Argasso" />
           </div>
-          <div>{children}</div>
+          <div className="mt-4 min-h-screen">{children}</div>
         </div>
       </div>
     </main>

@@ -1,21 +1,19 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-import { Author, Book, ContentWithImage } from '../interfaces'
+import { AuthorData, BookData, ContentWithImage } from '../interfaces'
 import sizeOf from 'image-size'
-
-const SIZE_LIMIT = -13 //
 
 export type Content =
   | {
       type: 'boecker'
-      data: Book
+      data: BookData
       content: string
       slug: string
     }
   | {
       type: 'foerfattare'
-      data: Author
+      data: AuthorData
       content: string
       slug: string
     }
@@ -51,7 +49,6 @@ export function getContent<T extends ContentType>(
       const { width, height } = sizeOf(imagePath)
       data.imageWidth = width
       data.imageHeight = height
-      console.log(data.image, width, height)
     }
   }
 
@@ -68,8 +65,5 @@ function absolutePath(type: ContentType, ...pathSegments: string[]) {
 
 export function listSlugs(type: ContentType) {
   const path = absolutePath(type)
-  return fs
-    .readdirSync(path)
-    .slice(SIZE_LIMIT)
-    .map((fileName) => fileName.replace(/\.md$/, ''))
+  return fs.readdirSync(path).map((fileName) => fileName.replace(/\.md$/, ''))
 }

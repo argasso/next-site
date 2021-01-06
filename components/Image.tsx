@@ -1,10 +1,9 @@
 import React from 'react'
-// import NextImage from 'next/image'
-import { domain } from '../siteconfig.json'
 import { ContentWithImage } from '../interfaces'
+import Img from 'react-cool-img'
 
 const DEFAULT_WIDTH = 200
-const DEFAULT_HEIGHT = 330
+const DEFAULT_HEIGHT = 320
 
 const sizeFactors = {
   small: 1,
@@ -14,9 +13,13 @@ const sizeFactors = {
 type Props = {
   image: ContentWithImage
   size: 'small' | 'large'
+  alt?: string
 }
 
-export default function Image({ image, size = 'small' }: Props) {
+const placeholderSrc = (width: number, height: number) =>
+  `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"%3E%3C/svg%3E`
+
+export default function Image({ image, size = 'small', alt = '' }: Props) {
   const width = sizeFactors[size] * DEFAULT_WIDTH
   let height = sizeFactors[size] * DEFAULT_HEIGHT
   if (image.imageWidth && image.imageHeight) {
@@ -25,13 +28,12 @@ export default function Image({ image, size = 'small' }: Props) {
   }
 
   return (
-    <div className="relative" style={{ width, height }}>
-      <img
-        src={`http://${domain}${image.image}?nf_resize=fit&w=${width}`}
-        alt=""
-        width={width}
-        height={height}
-      />
-    </div>
+    <Img
+      placeholder={placeholderSrc(width, height)}
+      src={`${image.image}?nf_resize=fit&w=${width}`}
+      alt={alt}
+      width={width}
+      height={height}
+    />
   )
 }

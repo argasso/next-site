@@ -1,22 +1,21 @@
 // import { Transition } from '@tailwindui/react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import React, { useState } from 'react'
+import Link from './Link'
 import Logo from './Logo'
 
 const ActiveLink: React.FC<{ href: string }> = ({ href, children }) => {
   const router = useRouter()
-  return (
-    <Link href={href}>
-      {router.pathname === href ? (
-        <a className="px-3 py-2 rounded-md text-sm font-medium  text-white bg-gray-900  focus:outline-none focus:text-white focus:bg-gray-700">
-          {children}
-        </a>
-      ) : (
-        <a className="px-3 py-2 rounded-md text-sm font-medium  text-gray-300 hover:text-white hover:bg-gray-700  focus:outline-none focus:text-white focus:bg-gray-700">
-          {children}
-        </a>
-      )}
+  return router.pathname === href ? (
+    <div className=" text-white flex m-1 px-3 mb-0 border-b-4">
+      <span className="my-auto">{children}</span>
+    </div>
+  ) : (
+    <Link
+      href={href}
+      className={`text-white flex m-1 px-3 rounded-md hover:no-underline focus:bg-red-900 hover:bg-red-900`}
+    >
+      <span className="my-auto">{children}</span>
     </Link>
   )
 }
@@ -26,27 +25,22 @@ const TopNav = () => {
   return (
     <nav className="bg-red-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center ">
-            <div className="flex-shrink-0">
-              <Logo color="white" className="w-32 h-16" />
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <ActiveLink href="/">Hem</ActiveLink>
-                <ActiveLink href="/boecker">Böcker</ActiveLink>
-                <ActiveLink href="/information/om-argasso">
-                  Information
-                </ActiveLink>
-                <ActiveLink href="/studiematerial">Studiematerial</ActiveLink>
-              </div>
+        <div className="flex items-stretch justify-between h-14 border-b border-white border-opacity-10">
+          <div className="flex items-stretch">
+            <ActiveLink href="/">
+              <Logo color="white" className="w-28 h-10" />
+            </ActiveLink>
+            <div className="hidden md:flex">
+              <ActiveLink href="/boecker">Böcker</ActiveLink>
+              <ActiveLink href="/information">Information</ActiveLink>
+              <ActiveLink href="/studiematerial">Studiematerial</ActiveLink>
             </div>
           </div>
-          <div className="hidden md:block">
+          <div className="my-auto hidden md:block">
             <div className="ml-4 flex items-center md:ml-6">
               <button
-                className="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
-                aria-label="Notifications"
+                className="p-1 border-2 mx-auto border-transparent text-gray-100 rounded-full hover:text-white  hover:bg-red-900 focus:outline-none focus:text-white focus:bg-red-900"
+                aria-label="Search"
               >
                 <svg
                   className="h-6 w-6"
@@ -67,7 +61,7 @@ const TopNav = () => {
           <div className="-mr-2 flex md:hidden">
             {/* <!-- Mobile menu button --> */}
             <button
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-100 hover:text-white hover:bg-red-900 focus:bg-red-900 focus:text-white"
               onClick={() => setOpen(!open)}
             >
               <svg

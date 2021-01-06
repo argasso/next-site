@@ -11,20 +11,20 @@ function Index({ books, författare }: Props) {
   const title = 'Alla våra böcker'
   return (
     <Layout title={title}>
-      <div className="grid gap-5 grid-cols-2 sm:grid-cols-books-3 md:grid-cols-books-4 lg:grid-cols-books-5 xl:grid-cols-books-6">
+      <div className="flex flex-row flex-wrap justify-start">
         {books.map((book, bookIndex) => (
-          <div
-            className="flex flex-col justify-center overflow-hidden"
-            key={bookIndex}
-          >
-            <div className="flex-none h-3/4 shadow-md flex flex-col">
-              <div className="mt-auto rounded shadow-lg overflow-hidden">
+          <div className="flex-none flex flex-col m-2" key={bookIndex}>
+            <div
+              className="flex-none flex flex-col"
+              style={{ height: '320px' }}
+            >
+              <div className="mt-auto rounded shadow-md relative overflow-hidden">
                 <Link href={book.slug} key={`${bookIndex}-image`}>
                   {book.data.image && <Image image={book.data} size="small" />}
                 </Link>
               </div>
             </div>
-            <div className="flex-none h-1/4">
+            <div className="flex-none">
               <div className="p-2">
                 <div className="font-bold mb-1">
                   <Link href={book.slug} key={`${bookIndex}-title`}>
@@ -33,17 +33,17 @@ function Index({ books, författare }: Props) {
                 </div>
                 <div className="text-gray-700 text-xs">
                   {book.data.author
-                    .map<React.ReactNode>((author, authorIndex) =>
-                      författare[author]?.slug ? (
+                    .map<React.ReactNode>((authorSlug, authorIndex) =>
+                      författare[authorSlug] ? (
                         <Link
                           key={`${bookIndex}-${authorIndex}-author`}
-                          href={`/foerfattare/${författare[author]?.slug}`}
+                          href={`/foerfattare/${authorSlug}`}
                         >
-                          {author}
+                          {författare[authorSlug].data.name}
                         </Link>
                       ) : (
                         <span key={`${bookIndex}-${authorIndex}-author`}>
-                          {author}
+                          {författare[authorSlug].data.name}
                         </span>
                       )
                     )
@@ -70,7 +70,7 @@ export const getStaticProps = async () => {
   const författare = författarelista.reduce<
     Record<string, typeof författarelista[number]>
   >((map, författare) => {
-    map[författare.data.name] = författare
+    map[författare.slug] = författare
     return map
   }, {})
   const books = listContent('boecker')
