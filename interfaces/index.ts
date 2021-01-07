@@ -1,3 +1,7 @@
+export interface ContentWithSlug {
+  slug: string
+}
+
 export interface ContentWithImage {
   image?: string
   imageWidth?: number
@@ -30,20 +34,24 @@ export interface AudioDetails {
   reciter?: string
 }
 
-export type BookData = ContentWithImage & {
-  title: string
-  author: string[]
-  isbn: string
-  price?: number
-  published: boolean
-  discontinued: boolean
-  shortDescription?: string
-  generalDetails?: GeneralDetails
-  translationDetails?: TranslationDetails
-  audioDetails?: AudioDetails
-}
+export type BookData = ContentWithSlug &
+  ContentWithImage & {
+    title: string
+    author: string[]
+    isbn: string
+    price?: number
+    published: boolean
+    discontinued: boolean
+    shortDescription?: string
+    body?: string
+    generalDetails?: GeneralDetails
+    translationDetails?: TranslationDetails
+    audioDetails?: AudioDetails
+  }
 
-export type AuthorData = ContentWithImage & {
-  name: string
-  published: boolean
-}
+export type AuthorData = ContentWithSlug &
+  ContentWithImage & {
+    name: string
+    published: boolean
+    body?: string
+  }

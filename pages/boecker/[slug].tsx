@@ -6,7 +6,7 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next'
-import { getContent, listSlugs } from '../../lib/markdownReader'
+import { firstParameter, getContent, listSlugs } from '../../lib/markdownReader'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -112,8 +112,9 @@ export default BookDetails
 export const getStaticProps = async (
   context: GetStaticPropsContext<{ slug: string }>
 ) => {
-  const bookData = getContent('boecker', context.params?.slug)
-  return { props: { bookData } }
+  const slug = firstParameter(context.params?.slug)
+  const bookData = slug ? getContent('boecker', slug) : undefined
+  return { props: { bookData }, notFound: !slug }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

@@ -14,12 +14,18 @@ type Props = {
   image: ContentWithImage
   size: 'small' | 'large'
   alt?: string
+  className?: string
 }
 
 const placeholderSrc = (width: number, height: number) =>
   `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"%3E%3C/svg%3E`
 
-export default function Image({ image, size = 'small', alt = '' }: Props) {
+export default function Image({
+  image,
+  size = 'small',
+  alt = '',
+  className,
+}: Props) {
   const width = sizeFactors[size] * DEFAULT_WIDTH
   let height = sizeFactors[size] * DEFAULT_HEIGHT
   if (image.imageWidth && image.imageHeight) {
@@ -34,6 +40,7 @@ export default function Image({ image, size = 'small', alt = '' }: Props) {
       alt={alt}
       width={width}
       height={height}
+      className={className}
     />
   )
 }

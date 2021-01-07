@@ -3,26 +3,33 @@ import { join } from 'path'
 import matter from 'gray-matter'
 import { AuthorData, BookData, ContentWithImage } from '../interfaces'
 import sizeOf from 'image-size'
+import memoized from 'nano-memoize'
 
-export type Content =
-  | {
-      type: 'boecker'
-      data: BookData
-      content: string
-      slug: string
-    }
-  | {
-      type: 'foerfattare'
-      data: AuthorData
-      content: string
-      slug: string
-    }
+type BookContent = {
+  type: 'boecker'
+  data: BookData
+  meta?: {
+    författare: AuthorData[]
+    kategorier: string[]
+  }
+}
+
+type AuthorContent = {
+  type: 'foerfattare'
+  data: AuthorData
+  meta?: {
+    böcker: BookData[]
+  }
+}
+
+export type Content = BookContent | AuthorContent
 
 type ContentType = Content['type']
-type ExcludeTypeField<A> = { [K in Exclude<keyof A, 'type'>]: A[K] }
-export type ExtractActionParameters<T> = ExcludeTypeField<
-  Extract<Content, { type: T }>
->
+// type ExcludeTypeField<A> = { [K in Exclude<keyof A, 'type'>]: A[K] }
+// export type ExtractActionParameters<T> = ExcludeTypeField<
+//   Extract<Content, { type: T }>
+// >
+export type ExtractActionParameters<T> = Extract<Content, { type: T }>
 
 export function listContent<T extends ContentType>(
   type: T
@@ -30,18 +37,38 @@ export function listContent<T extends ContentType>(
   return listSlugs(type).map((slug) => getContent(type, slug))
 }
 
-function hasImage(content: any): content is ContentWithImage {
-  return (content as ContentWithImage).image !== undefined
-}
-
 export function getContent<T extends ContentType>(
   type: T,
-  slug?: string | string[]
+  slug: string
 ): ExtractActionParameters<T> {
-  const singleSlug = Array.isArray(slug) ? slug?.[0] : slug
-  const filePath = absolutePath(type, `${singleSlug}.md`)
+  const content = readContent(type, slug)
+  if (isBok(content)) {
+    const författare = content.data.author.map((authorSlug) => {
+      return readContent('foerfattare', authorSlug).data
+    })
+    content.meta = {
+      författare,
+      kategorier: [],
+    }
+  } else if (isFörfattare(content)) {
+    const böcker = listContent('boecker')
+      .filter((bok) => bok.data.author.includes(content.data.slug))
+      .map((bok) => bok.data)
+    content.meta = {
+      böcker,
+    }
+  }
+  return content
+}
+
+const readContent = memoized(function <T extends ContentType>(
+  type: T,
+  slug: string
+) {
+  console.log('readContent', type, slug)
+  const filePath = absolutePath(type, `${slug}.md`)
   const fileContents = fs.readFileSync(filePath, 'utf8')
-  const { data, content } = matter(fileContents)
+  const { data, content: body } = matter(fileContents)
 
   if (hasImage(data) && data.image) {
     const imagePath = join('.', 'public', data.image)
@@ -51,13 +78,14 @@ export function getContent<T extends ContentType>(
       data.imageHeight = height
     }
   }
+  data.slug = slug
+  data.body = body
 
   return {
+    type,
     data,
-    content,
-    slug: singleSlug,
   } as ExtractActionParameters<T>
-}
+})
 
 function absolutePath(type: ContentType, ...pathSegments: string[]) {
   return join(process.cwd(), 'content', type, ...pathSegments)
@@ -66,4 +94,20 @@ function absolutePath(type: ContentType, ...pathSegments: string[]) {
 export function listSlugs(type: ContentType) {
   const path = absolutePath(type)
   return fs.readdirSync(path).map((fileName) => fileName.replace(/\.md$/, ''))
+}
+
+export function firstParameter(params?: string | string[]) {
+  return Array.isArray(params) ? params?.[0] : params
+}
+
+function hasImage(content: any): content is ContentWithImage {
+  return (content as ContentWithImage).image !== undefined
+}
+
+function isBok(content: Content): content is BookContent {
+  return content?.type === 'boecker'
+}
+
+function isFörfattare(content: Content): content is AuthorContent {
+  return content?.type === 'foerfattare'
 }

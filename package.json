@@ -12,6 +12,7 @@
     "autoprefixer": "^10.1.0",
     "gray-matter": "^4.0.2",
     "image-size": "^0.9.3",
+    "nano-memoize": "^1.2.1",
     "next": "latest",
     "postcss": "^8.2.2",
     "react": "^17.0.1",
