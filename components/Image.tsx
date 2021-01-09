@@ -1,6 +1,7 @@
 import React from 'react'
 import { ContentWithImage } from '../interfaces'
 import Img from 'react-cool-img'
+import { placeholderSrc } from '../lib/imageHelper'
 
 const DEFAULT_WIDTH = 200
 const DEFAULT_HEIGHT = 320
@@ -16,9 +17,6 @@ type Props = {
   alt?: string
   className?: string
 }
-
-const placeholderSrc = (width: number, height: number) =>
-  `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"%3E%3C/svg%3E`
 
 export default function Image({
   image,

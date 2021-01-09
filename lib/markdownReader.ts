@@ -1,7 +1,12 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-import { AuthorData, BookData, ContentWithImage } from '../interfaces'
+import {
+  AuthorData,
+  BookData,
+  ContentWithImage,
+  Startsida,
+} from '../interfaces'
 import sizeOf from 'image-size'
 import memoized from 'nano-memoize'
 
@@ -22,7 +27,15 @@ type AuthorContent = {
   }
 }
 
-export type Content = BookContent | AuthorContent
+type IndexContent = {
+  type: ''
+  data: Startsida
+  meta?: {
+    böcker: Record<string, BookContent>
+  }
+}
+
+export type Content = BookContent | AuthorContent | IndexContent
 
 type ContentType = Content['type']
 // type ExcludeTypeField<A> = { [K in Exclude<keyof A, 'type'>]: A[K] }
@@ -57,6 +70,17 @@ export function getContent<T extends ContentType>(
     content.meta = {
       böcker,
     }
+  } else if (isStartsida(content)) {
+    const slugs = content.data.kommande.map((kommande) => kommande.bok)
+    const böcker = listContent('boecker')
+      .filter((bok) => slugs.includes(bok.data.slug))
+      .reduce<Record<string, BookContent>>((map, bok) => {
+        map[bok.data.slug] = bok
+        return map
+      }, {})
+    content.meta = {
+      böcker,
+    }
   }
   return content
 }
@@ -65,7 +89,6 @@ const readContent = memoized(function <T extends ContentType>(
   type: T,
   slug: string
 ) {
-  console.log('readContent', type, slug)
   const filePath = absolutePath(type, `${slug}.md`)
   const fileContents = fs.readFileSync(filePath, 'utf8')
   const { data, content: body } = matter(fileContents)
@@ -110,4 +133,8 @@ function isBok(content: Content): content is BookContent {
 
 function isFörfattare(content: Content): content is AuthorContent {
   return content?.type === 'foerfattare'
+}
+
+function isStartsida(content: Content): content is IndexContent {
+  return content?.type === ''
 }

@@ -55,3 +55,16 @@ export type AuthorData = ContentWithSlug &
     published: boolean
     body?: string
   }
+
+export type Startsida = {
+  title: string
+  intro: string
+  banners: {
+    name: string
+    image: string
+  }[]
+  kommande: {
+    bok: string
+    text: string
+  }[]
+}

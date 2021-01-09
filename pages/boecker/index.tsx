@@ -12,10 +12,9 @@ function Index({ böcker }: Props) {
     <Layout title={title}>
       <div className="flex flex-row flex-wrap justify-start">
         {böcker.map((bok) => (
-          <BookCard bok={bok} />
+          <BookCard bok={bok} key={bok.data.slug} />
         ))}
       </div>
-      <main></main>
     </Layout>
   )
 }

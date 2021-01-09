@@ -210,9 +210,9 @@ collections:
               widget: "string",
               required: false,
             }
-  - name: "sidor"
-    label: "Sidor"
-    label_singular: "Sida"
+  - name: "fasta_sidor"
+    label: "Fasta sidor"
+    label_singular: "Fast Sida"
     files:
       - label: "Startsida"
         name: "index"
@@ -232,17 +232,17 @@ collections:
             fields:
               - {
                   label: Bok,
-                  name: book,
+                  name: bok,
                   widget: relation,
                   collection: boecker,
                   search_fields: ["title"],
-                  value_field: title,
+                  value_field: "{{slug}}",
                 }
               - { label: Text, name: text, widget: markdown }
-  - name: information
-    label: Informationssidor
-    label_singular: 'Informationssida'
-    folder: pages/information
+  - name: menysidor
+    label: Menysidor
+    label_singular: 'Menysida'
+    folder: content/menysidor
     create: true
     # adding a nested object will show the collection folder structure
     nested:
@@ -252,6 +252,11 @@ collections:
       - label: Titel
         name: title
         widget: string
+      - label: Meny
+        name: meny
+        widget: string
+        hint: Namn på länk i menyer. Utelämna för att använda Titel. 
+        required: false
       - label: Beskrivning
         name: body
         widget: markdown

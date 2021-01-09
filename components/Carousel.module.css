@@ -1,27 +1,4 @@
-@tailwind base;
-
-@layer base {
-  h1 {
-    @apply text-2xl;
-  }
-  h2 {
-    @apply text-xl;
-  }
-  h3 {
-    @apply text-lg;
-  }
-  a {
-    @apply text-red-700 hover:underline;
-  }
-  p {
-    @apply mb-2;
-  }
-}
-
-@tailwind components;
-@tailwind utilities;
-
-.carousel-open:checked + .carousel-item {
+/* .carousel-open:checked + .carousel-item {
   position: static;
   opacity: 100;
 }
@@ -71,4 +48,4 @@
   li:nth-child(4)
   .carousel-bullet {
   color: #000;
-}
+} */
