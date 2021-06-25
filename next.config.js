@@ -8,17 +8,29 @@ module.exports = {
   },
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on fs module
-    if (!isServer) {
-      config.node = {
-        fs: 'empty',
-      }
-    }
+    //if (!isServer) {
+    //  config.node = {
+    //    fs: 'empty',
+    //  }
+    //}
     // SVG support
+    //    config.module.rules.push({
+    //      test: /\.svg$/,
+    //      use: [
+    //        {
+    //          loader: '@svgr/webpack',
+    //        },
+    //        {
+    //          loader: 'file-loader',
+    //        },
+    //      ],
+    //      type: 'javascript/auto',
+    //      issuer: {
+    //        and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
+    //      },
+    //    })
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: {
-        test: /\.(js|ts)x?$/,
-      },
       use: ['@svgr/webpack'],
     })
     return config

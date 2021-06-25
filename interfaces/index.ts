@@ -3,7 +3,7 @@ export interface ContentWithSlug {
 }
 
 export interface ContentWithImage {
-  image?: string
+  image: string
   imageWidth?: number
   imageHeight?: number
 }

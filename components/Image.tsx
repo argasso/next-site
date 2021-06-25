@@ -2,6 +2,7 @@ import React from 'react'
 import { ContentWithImage } from '../interfaces'
 import Img from 'react-cool-img'
 import { placeholderSrc } from '../lib/imageHelper'
+import NextImage, { ImageLoader } from 'next/image'
 
 const DEFAULT_WIDTH = 200
 const DEFAULT_HEIGHT = 320
@@ -18,6 +19,10 @@ type Props = {
   className?: string
 }
 
+const myLoader: ImageLoader = ({ src, width, quality }) => {
+  return `${src}?nf_resize=fit&w=${width}`
+}
+
 export default function Image({
   image,
   size = 'small',
@@ -32,10 +37,17 @@ export default function Image({
   }
 
   return (
-    <Img
-      placeholder={placeholderSrc(width, height)}
-      src={`${image.image}?nf_resize=fit&w=${width}`}
-      alt={alt}
+    //    <Img
+    //      placeholder={placeholderSrc(width, height)}
+    //      src={`${image.image}?nf_resize=fit&w=${width}`}
+    //      alt={alt}
+    //      width={width}
+    //      height={height}
+    //      className={className}
+    //    />
+    <NextImage
+      loader={myLoader}
+      src={image.image}
       width={width}
       height={height}
       className={className}
