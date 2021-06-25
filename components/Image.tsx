@@ -19,7 +19,7 @@ type Props = {
   className?: string
 }
 
-const myLoader: ImageLoader = ({ src, width, quality }) => {
+const myLoader: ImageLoader = ({ src, width }) => {
   return `${src}?nf_resize=fit&w=${width}`
 }
 
@@ -51,6 +51,7 @@ export default function Image({
       width={width}
       height={height}
       className={className}
+      alt={alt}
     />
   )
 }
