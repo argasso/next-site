@@ -1,7 +1,7 @@
 import React from 'react'
 import { ContentWithImage } from '../interfaces'
-import Img from 'react-cool-img'
-import { placeholderSrc } from '../lib/imageHelper'
+// import Img from 'react-cool-img'
+// import { placeholderSrc } from '../lib/imageHelper'
 import NextImage, { ImageLoader } from 'next/image'
 
 const DEFAULT_WIDTH = 200
