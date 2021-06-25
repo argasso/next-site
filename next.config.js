@@ -2,7 +2,7 @@ const siteconfig = require('./siteconfig.json')
 
 module.exports = {
   // pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx', 'md'],
-  target: 'serverless',
+  // target: 'serverless',
   images: {
     domains: [siteconfig.domain],
   },
