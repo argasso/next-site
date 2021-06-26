@@ -4,10 +4,10 @@ import matter from 'gray-matter'
 import {
   AuthorData,
   BookData,
-  ContentWithImage,
+  //  ContentWithImage,
   Startsida,
 } from '../interfaces'
-import sizeOf from 'image-size'
+// import sizeOf from 'image-size'
 import memoized from 'nano-memoize'
 
 type BookContent = {
@@ -123,9 +123,9 @@ export function firstParameter(params?: string | string[]) {
   return Array.isArray(params) ? params?.[0] : params
 }
 
-function hasImage(content: any): content is ContentWithImage {
-  return (content as ContentWithImage).image !== undefined
-}
+// function hasImage(content: any): content is ContentWithImage {
+//   return (content as ContentWithImage).image !== undefined
+// }
 
 function isBok(content: Content): content is BookContent {
   return content?.type === 'boecker'
