@@ -93,14 +93,14 @@ const readContent = memoized(function <T extends ContentType>(
   const fileContents = fs.readFileSync(filePath, 'utf8')
   const { data, content: body } = matter(fileContents)
 
-  if (hasImage(data) && data.image) {
-    const imagePath = join('.', 'public', data.image)
-    if (fs.existsSync(imagePath)) {
-      const { width, height } = sizeOf(imagePath)
-      data.imageWidth = width
-      data.imageHeight = height
-    }
-  }
+  // if (hasImage(data) && data.image) {
+  //   const imagePath = join('.', 'public', data.image)
+  //   if (fs.existsSync(imagePath)) {
+  //     const { width, height } = sizeOf(imagePath)
+  //     data.imageWidth = width
+  //     data.imageHeight = height
+  //   }
+  // }
   data.slug = slug
   data.body = body
 

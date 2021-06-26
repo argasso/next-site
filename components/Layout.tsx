@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import { title as argassoTitle } from '../siteconfig.json'
+import siteConfig from '../siteconfig.json'
 import Breadcrumbs from './Breadcrumbs'
 import TopNav from './TopNav'
 import Logo from './Logo'
@@ -15,7 +15,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
   <div className="bg-yellow-50">
     <Head>
       <title>
-        {argassoTitle} - {title}
+        {siteConfig.title} - {title}
       </title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />

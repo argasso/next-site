@@ -24,9 +24,9 @@ export default function BookCard({
         <div className="text-sm">
           {bok.meta &&
             bok.meta.författare
-              .map<React.ReactNode>((författare) => (
+              .map<React.ReactNode>((författare, authorIndex) => (
                 <Link
-                  // key={`${bok.data.slug}-author-${authorIndex}`}
+                  key={`${bok.data.slug}-author-${authorIndex}`}
                   href={`/foerfattare/${författare.slug}`}
                 >
                   {författare.name}

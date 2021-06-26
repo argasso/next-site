@@ -31,10 +31,10 @@ export default function Image({
 }: Props) {
   const width = sizeFactors[size] * DEFAULT_WIDTH
   let height = sizeFactors[size] * DEFAULT_HEIGHT
-  if (image.imageWidth && image.imageHeight) {
-    const resizeFactor = width / image.imageWidth
-    height = Math.round(image.imageHeight * resizeFactor)
-  }
+  //if (image.imageWidth && image.imageHeight) {
+  //  const resizeFactor = width / image.imageWidth
+  //  height = Math.round(image.imageHeight * resizeFactor)
+  //}
 
   return (
     <Img
@@ -42,7 +42,7 @@ export default function Image({
       src={`${image.image}?nf_resize=fit&w=${width}`}
       alt={alt}
       width={width}
-      height={height}
+      // height={height}
       className={className}
     />
     //<NextImage
