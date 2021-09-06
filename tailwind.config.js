@@ -1,7 +1,19 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+        '2xl': '6rem',
+      },
+    },
     extend: {
       colors: {
         teal: {
@@ -24,10 +36,19 @@ module.exports = {
         'books-5': 'repeat(5, 200px)',
         'books-6': 'repeat(6, 200px)',
       },
+      outline: {
+        'gray-100': [`4px solid ${colors.gray[100]}`, '4px'],
+        'green-50': [`4px solid ${colors.green[50]}`, '4px'],
+        white: [`0px solid ${colors.white}`, '0px'],
+      },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+    require('tailwindcss-debug-screens'),
+    require('@tailwindcss/forms'),
+  ],
 }

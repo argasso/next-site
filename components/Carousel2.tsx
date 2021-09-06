@@ -1,8 +1,8 @@
 import React from 'react'
-import { Startsida } from '../interfaces'
 import Img from 'react-cool-img'
 import styles from './Carousel2.module.css'
 import { placeholderSrc } from '../lib/imageHelper'
+import { StartPage } from '../src/types/netlify-types'
 
 function next(index: number, size: number) {
   return ((index + 1) % size) + 1
@@ -12,7 +12,7 @@ function prev(index: number, size: number) {
   return ((index + size - 1) % size) + 1
 }
 
-export default function Carousel({ banners }: Pick<Startsida, 'banners'>) {
+export default function Carousel({ banners }: Pick<StartPage, 'banners'>) {
   const size = banners.length
   return (
     <section className={styles.carousel} aria-label="Gallery">

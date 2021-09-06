@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Startsida } from '../interfaces'
+import { StartPage } from '../src/types/netlify-types'
 // import Img from 'react-cool-img'
 
-export default function Carousel({ banners }: Pick<Startsida, 'banners'>) {
+export default function Carousel({ banners }: Pick<StartPage, 'banners'>) {
   const [current, setCurrent] = useState(0)
 
   const size = banners.length
@@ -12,7 +12,7 @@ export default function Carousel({ banners }: Pick<Startsida, 'banners'>) {
     const interval = setInterval(() => {
       setCurrent(next(current, size))
       console.log('This will run every second!')
-    }, 10000)
+    }, 1000)
     return () => clearInterval(interval)
   }, [])
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import { ContentWithImage } from '../interfaces'
 import Img from 'react-cool-img'
 import { placeholderSrc } from '../lib/imageHelper'
 // import NextImage, { ImageLoader } from 'next/image'
@@ -13,7 +12,7 @@ const sizeFactors = {
 }
 
 type Props = {
-  image: ContentWithImage
+  image?: string
   size: 'small' | 'large'
   alt?: string
   className?: string
@@ -35,11 +34,13 @@ export default function Image({
   //  const resizeFactor = width / image.imageWidth
   //  height = Math.round(image.imageHeight * resizeFactor)
   //}
-
+  const src = image
+    ? `${image}?nf_resize=fit&w=${width}`
+    : placeholderSrc(width, height)
   return (
     <Img
       placeholder={placeholderSrc(width, height)}
-      src={`${image.image}?nf_resize=fit&w=${width}`}
+      src={src}
       alt={alt}
       width={width}
       // height={height}

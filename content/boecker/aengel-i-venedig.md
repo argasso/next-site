@@ -2,11 +2,13 @@
 title: Ängel i Venedig
 author:
   - mary-hoffman
+kategori:
+  - boecker/laettlaesta-boecker/index
+  - boecker/laettlaesta-boecker/fraan-13-aar/index
 isbn: 978-91-87667-52-7
 price: 93
 published: true
 discontinued: false
-image: /uploads/boecker/angel-i-venedig-9789187667527.jpg
 shortDescription: >-
   Venedig, 1571. På det stora skeppsvarvet Arsenalen hämtar Luca vatten, hugger
   ved och tänder brasor åt båtbyggarna. Medan han arbetar drömmer han om en
@@ -19,8 +21,8 @@ generalDetails:
 translationDetails:
   translator: Helena Olsson
   originalTitle: Angel of Venice
+image: /uploads/boecker/aengel-i-venedig.jpg
 ---
-
 Venedig, 1571. På det stora skeppsvarvet Arsenalen hämtar Luca vatten, hugger ved och tänder brasor åt båtbyggarna. Medan han arbetar drömmer han om en flicka med gyllene hår som en ängels och hud lika mjuk som en vit persika.
 
 Men Venedig rustar sig för krig – krig mot det mäktiga Ottomanska riket – och snart bordar Luca skeppet Ängeln för att göra sin plikt.

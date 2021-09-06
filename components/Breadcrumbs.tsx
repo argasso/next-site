@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
+import { asArray } from '../lib/utils'
 import Link from './Link'
+//import from ''
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 
-const unSlug = (slug: string) => {
+export const unSlug = (slug: string) => {
   return slug
     .replace(/-/g, ' ')
     .replace(/aa/g, 'å')
@@ -23,19 +25,15 @@ export default function Breadcrumbs({ rootName, className = '' }: Props) {
   const router = useRouter()
 
   const breadcrumbs = useMemo(() => {
-    if (router) {
-      const pathElements = router.asPath.split('/')
-      pathElements.shift()
+    const pathElements = asArray(router.query.slug)
+    const pathArray = pathElements.map((pathElement, i) => {
+      return {
+        pathElement,
+        href: '/' + pathElements.slice(0, i + 1).join('/'),
+      }
+    })
 
-      const pathArray = pathElements.map((pathElement, i) => {
-        return {
-          pathElement,
-          href: '/' + pathElements.slice(0, i + 1).join('/'),
-        }
-      })
-
-      return pathArray
-    }
+    return pathArray
   }, [router])
 
   if (!breadcrumbs) {
@@ -44,7 +42,7 @@ export default function Breadcrumbs({ rootName, className = '' }: Props) {
 
   return (
     <nav aria-label="breadcrumbs">
-      <ol className={`flex breadcrumbs ${className}`}>
+      <ol className={`flex ${className}`}>
         <li>
           {/* <FontAwesomeIcon
             className="mr-2"

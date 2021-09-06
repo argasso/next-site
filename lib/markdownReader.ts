@@ -1,41 +1,49 @@
 import fs from 'fs'
-import { join } from 'path'
+import path from 'path'
 import matter from 'gray-matter'
-import {
-  AuthorData,
-  BookData,
-  //  ContentWithImage,
-  Startsida,
-} from '../interfaces'
-// import sizeOf from 'image-size'
 import memoized from 'nano-memoize'
+import { Author, Book, Category, StartPage } from '../src/types/netlify-types'
 
-type BookContent = {
+export type BookContent = {
   type: 'boecker'
-  data: BookData
+  data: Book
+  slug: string
   meta?: {
-    författare: AuthorData[]
+    författare: AuthorContent[]
     kategorier: string[]
   }
 }
 
-type AuthorContent = {
+export type AuthorContent = {
   type: 'foerfattare'
-  data: AuthorData
+  data: Author
+  slug: string
   meta?: {
-    böcker: BookData[]
+    böcker: BookContent[]
   }
+}
+
+type MenysidorContent = {
+  type: 'kategorier'
+  data: Category
+  slug: string
+  meta?: {}
 }
 
 type IndexContent = {
   type: ''
-  data: Startsida
+  data: StartPage
+  slug: string
   meta?: {
     böcker: Record<string, BookContent>
   }
 }
 
-export type Content = BookContent | AuthorContent | IndexContent
+export type Content =
+  | BookContent
+  | AuthorContent
+  | IndexContent
+  | MenysidorContent
 
 type ContentType = Content['type']
 // type ExcludeTypeField<A> = { [K in Exclude<keyof A, 'type'>]: A[K] }
@@ -57,25 +65,26 @@ export function getContent<T extends ContentType>(
   const content = readContent(type, slug)
   if (isBok(content)) {
     const författare = content.data.author.map((authorSlug) => {
-      return readContent('foerfattare', authorSlug).data
+      return readContent('foerfattare', authorSlug)
     })
     content.meta = {
       författare,
       kategorier: [],
     }
   } else if (isFörfattare(content)) {
-    const böcker = listContent('boecker')
-      .filter((bok) => bok.data.author.includes(content.data.slug))
-      .map((bok) => bok.data)
+    const böcker = listContent('boecker').filter((bok) =>
+      bok.data.author.includes(content.slug)
+    )
+
     content.meta = {
       böcker,
     }
   } else if (isStartsida(content)) {
     const slugs = content.data.kommande.map((kommande) => kommande.bok)
     const böcker = listContent('boecker')
-      .filter((bok) => slugs.includes(bok.data.slug))
+      .filter((bok) => slugs.includes(bok.slug))
       .reduce<Record<string, BookContent>>((map, bok) => {
-        map[bok.data.slug] = bok
+        map[bok.slug] = bok
         return map
       }, {})
     content.meta = {
@@ -101,22 +110,26 @@ const readContent = memoized(function <T extends ContentType>(
   //     data.imageHeight = height
   //   }
   // }
-  data.slug = slug
+
+  //data.slug = slug
   data.body = body
 
   return {
     type,
     data,
+    slug,
   } as ExtractActionParameters<T>
 })
 
 function absolutePath(type: ContentType, ...pathSegments: string[]) {
-  return join(process.cwd(), 'content', type, ...pathSegments)
+  return path.join(process.cwd(), 'content', type, ...pathSegments)
 }
 
 export function listSlugs(type: ContentType) {
   const path = absolutePath(type)
-  return fs.readdirSync(path).map((fileName) => fileName.replace(/\.md$/, ''))
+  return fs
+    .readdirSync(path)
+    .map((fileName) => fileName.replace(/\.(md|mdx)$/, ''))
 }
 
 export function firstParameter(params?: string | string[]) {
@@ -138,3 +151,25 @@ function isFörfattare(content: Content): content is AuthorContent {
 function isStartsida(content: Content): content is IndexContent {
   return content?.type === ''
 }
+
+export function getFiles(type: ContentType) {
+  const prefixPaths = absolutePath(type)
+  const files = getFilesPathsRecursively(prefixPaths)
+  // Only want to return blog/path and ignore root, replace is needed to work on Windows
+  return files.map((file) => path.parse(file).dir)
+}
+
+const getFilesPathsRecursively = (
+  directory: string,
+  origin?: string
+): string[] =>
+  fs.readdirSync(directory).reduce<string[]>((files, file) => {
+    const absolute = path.join(directory, file)
+    // console.log('readdir', directory, file, absolute)
+    return [
+      ...files,
+      ...(fs.statSync(absolute).isDirectory()
+        ? getFilesPathsRecursively(absolute, origin || directory)
+        : [path.relative(origin || directory, absolute)]),
+    ]
+  }, [])

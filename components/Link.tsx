@@ -20,7 +20,7 @@ function makeAbsolute(
   router: NextRouter
 ): string | UrlObject {
   if (typeof href === 'string') {
-    return href.startsWith('/') ? href : `${router.pathname}/${href}`
+    return href.startsWith('/') ? href : `${router.asPath}/${href}`
   }
   return href
 }

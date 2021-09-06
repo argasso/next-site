@@ -2,11 +2,13 @@
 title: Annies favorit
 author:
   - catherine-macphail
+kategori:
+  - boecker/laettlaesta-boecker/index
+  - boecker/laettlaesta-boecker/fraan-10-aar/index
 isbn: 978-91-87667-57-2
 price: 93
 published: true
 discontinued: false
-image: /uploads/boecker/annies-favorit-9789187667572.jpg
 shortDescription: >-
   Karam tycker om sin nya skola.  Alla barnen är trevliga.  Alla utom Alex. När
   skolans översittare Alex börjar trakassera Karam bestämmer han sig för att
@@ -21,8 +23,8 @@ generalDetails:
 translationDetails:
   translator: Maria Fröberg
   originalTitle: Annie's Choice
+image: /uploads/boecker/annies-favorit.jpg
 ---
-
 Karam tycker om sin nya skola.  
 Alla barnen är trevliga.  
 Alla utom Alex.

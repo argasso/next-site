@@ -1,4 +1,11 @@
 {
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    // same as our --compilerOptions flag and our TS_NODE_COMPILER_OPTIONS environment variable
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
   "compilerOptions": {
     "allowJs": true,
     "alwaysStrict": true,
@@ -6,7 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "es2017", "DOM.Iterable"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -19,5 +26,5 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "additional.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "additional.d.ts", "mdx.d.ts"]
 }

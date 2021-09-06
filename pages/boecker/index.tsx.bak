@@ -1,0 +1,24 @@
+import React from 'react'
+import { InferGetStaticPropsType } from 'next'
+import { listContent } from '../../lib/markdownReader'
+import BookCard from '../../components/BookCard'
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>
+
+function Index({ böcker }: Props) {
+  return (
+    <div className="flex flex-row flex-wrap justify-start">
+      {böcker.map((bok) => (
+        <BookCard bok={bok} key={bok.data.slug} />
+      ))}
+    </div>
+  )
+}
+
+export default Index
+
+export const getStaticProps = async () => {
+  const title = 'Alla våra böcker'
+  const böcker = listContent('boecker')
+  return { props: { böcker, title } }
+}

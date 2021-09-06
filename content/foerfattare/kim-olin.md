@@ -1,9 +1,8 @@
 ---
 name: Kim Olin
 published: true
-image: /uploads/foerfattare/f-anonymous.jpg
+image: /uploads/foerfattare/anonymous.jpg
 ---
-
 Kim Olin (pseudonym) är född på 70-talet och har jobbat med många olika saker, bland annat med barn och ungdomar, och har även kommit i kontakt med kriminalvården och fängelsevärlden genom sitt arbete. Kim berättar att det var en riktig utmaning att skriva Pulverlandböckerna på grund av deras kortfattade stil. Under seriens gång har huvudpersonerna växlat, men de nya har alltid varit med som bifigurer i någon av de tidigare böckerna.
 
 _Vad fick dig att bli författare?_  

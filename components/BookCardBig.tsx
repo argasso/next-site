@@ -1,5 +1,7 @@
 import React from 'react'
 import { ExtractActionParameters } from '../lib/markdownReader'
+import { renderAuthors } from './AuthorLink'
+import { H3 } from './Html'
 import Image from './Image'
 
 export default function BookCardBig({
@@ -10,17 +12,16 @@ export default function BookCardBig({
   bok: ExtractActionParameters<'boecker'>
 }) {
   return (
-    <div className="container mx-auto flex flex-col md:flex-row items-center my-12 md:my-24">
-      <div className="flex flex-col w-full lg:w-1/2 justify-center items-start pt-12 pb-24 px-6">
-        <p className="uppercase tracking-loose">{bok.data.author.join()}</p>
-        <h1 className="font-bold text-3xl my-4">{bok.data.title}</h1>
-        <p className="leading-normal mb-4">{text}</p>
-        <button className="bg-transparent hover:bg-gray-900 text-gray-900 hover:text-white rounded shadow hover:shadow-lg py-2 px-4 border border-gray-900 hover:border-transparent">
-          Super Button
-        </button>
+    <div className="flex flex-row items-start">
+      <div className="w-2/5">
+        <Image size="small" image={bok.data.image} />
       </div>
-      <div className="w-full lg:w-1/2 lg:py-6 text-center">
-        <Image size="small" image={bok.data} />
+      <div className="flex flex-col w-3/5 justify-center items-start pl-6">
+        <p className="text-sm uppercase">
+          {bok.meta && renderAuthors(bok.meta?.författare)}
+        </p>
+        <H3>{bok.data.title}</H3>
+        <p className="leading-normal mb-4 line-clamp-6">{text}</p>
       </div>
     </div>
     // <div className="flex flex-row justify-items-stretch mx-auto rounded-md shadow-md overflow-hidden">

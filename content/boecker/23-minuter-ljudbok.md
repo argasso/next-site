@@ -2,10 +2,11 @@
 title: '23 minuter, ljudbok'
 author:
   - james-lovegrove
+kategori:
+  - boecker/ljudboecker/index
 isbn: 978-91-87667-13-8
 published: true
 discontinued: false
-image: /uploads/boecker/23-minuter-ljudbok-9789187667138.jpg
 shortDescription: >-
   Från sin plats högt uppe på taken har Taj utsikt över hela staden. Han vet att
   en gangsterledare har beordrat mordet på hans pappa. Han vet att han bara har
@@ -21,8 +22,8 @@ translationDetails:
 audioDetails:
   duration: 'ca 1,5 tim'
   reciter: Peter Öberg
+image: /uploads/boecker/23-minuter-ljudbok.jpg
 ---
-
 Från sin plats högt uppe på taken har Taj utsikt över hela staden. Han vet att en gangsterledare har beordrat mordet på hans pappa. Han vet att han bara har 23 minuter på sig att stoppa det och att han inte har något annat val än att göra det till fots. Och han vet att ingen är bättre på parkour än han i den här delen av staden.
 
 Kommer han att hinna fram och rädda sin pappa innan det är för sent?

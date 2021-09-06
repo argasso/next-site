@@ -1,4 +1,5 @@
 const siteconfig = require('./siteconfig.json')
+const path = require('path')
 
 module.exports = {
   // pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx', 'md'],
@@ -6,7 +7,7 @@ module.exports = {
   images: {
     domains: [siteconfig.domain],
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, defaultLoaders }) => {
     // Fixes npm packages that depend on fs module
     //if (!isServer) {
     //  config.node = {
@@ -33,6 +34,24 @@ module.exports = {
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     })
+    config.module.rules.push({
+      test: /\.md$/,
+      loader: 'frontmatter-markdown-loader',
+      options: { mode: ['body'] },
+    })
+    config.module.rules.push({
+      test: /\.mdx$/,
+      loader: 'frontmatter-markdown-loader',
+      options: { mode: ['body'] },
+    })
+    // config.module.rules.push({
+    //   test: /\.mdx$/,
+    //   use: [
+    //     defaultLoaders.babel,
+    //     '@mdx-js/loader',
+    //     path.join(__dirname, './lib/fm-loader'),
+    //   ],
+    // })
     return config
   },
 }
