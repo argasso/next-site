@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import AnimateHeight from 'react-animate-height'
-import { Flipped, Flipper } from 'react-flip-toolkit'
+// import { Flipped, Flipper } from 'react-flip-toolkit'
 import { Content } from '../lib/markdownReader'
 import { getMostSpecificCriteria } from '../src/filter'
 import { Filter } from '../src/filter/Filter'
@@ -64,7 +64,7 @@ export function FilteredGrid2<T extends Content>({
     .reduce((x, y) => x.concat(y), [])
 
   return (
-    <div className="border-t pt-5">
+    <div className="border-t pt-5 mt-10">
       <div className="flex-auto">
         <div className="flex gap-3 justify-between items-center py-2">
           <H3>{renderTitle(filteredItems.length, itemName, itemName)}</H3>
@@ -78,17 +78,18 @@ export function FilteredGrid2<T extends Content>({
         <AnimateHeight duration={500} height={filterOpen ? 'auto' : 0}>
           <BookFilter2<T> filters={filters} items={items}></BookFilter2>
         </AnimateHeight>
-        <Flipper
+        {/* <Flipper
           flipKey={`${sorter.key}-${filteredItems
             .map((item) => item.slug)
             .join('-')}`}
           spring="veryGentle"
-        >
-          {/* <div className="flex flex-row flex-wrap justify-items-start py-10"> */}
-          <div className="grid gap-x-3 gap-y-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 justify-items-start py-10">
-            {filteredItems.map((item) => (
-              <div className="self-end">
-                <Flipped
+        > */}
+        {/* <div className="flex flex-row flex-wrap justify-items-start py-10"> */}
+        <div className="grid gap-x-3 gap-y-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 justify-items-start py-10">
+          {filteredItems.map((item) => (
+            <div className="self-end">
+              {children(item)}
+              {/* <Flipped
                   // onAppear={onElementAppear}
                   // onExit={onExit}
                   key={item.slug}
@@ -97,11 +98,11 @@ export function FilteredGrid2<T extends Content>({
                   {(flippedProps) => (
                     <div {...flippedProps}>{children(item)}</div>
                   )}
-                </Flipped>
-              </div>
-            ))}
-          </div>
-        </Flipper>
+                </Flipped> */}
+            </div>
+          ))}
+        </div>
+        {/* </Flipper> */}
       </div>
     </div>
   )

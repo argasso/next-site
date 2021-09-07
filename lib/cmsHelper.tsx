@@ -11,6 +11,7 @@ import remarkEmojiPlugin from 'remark-emoji'
 import { FC, PropsWithChildren } from 'react'
 import { getDocumentStyles } from './documentHelper'
 import { PreviewTemplateMenysida } from '../components/cms/PreviewTemplateMenysida'
+import { KatalogForm } from '../components/mdx/components/KatalogForm'
 
 export const mdxComponents = {
   h1: H1,
@@ -27,6 +28,8 @@ const components = {
   ...mdxComponents,
   h1: AvoidH1,
 }
+
+const scope = { KatalogForm }
 
 const Avoid: FC<{ label: string; message: string }> = ({
   label,
@@ -60,8 +63,6 @@ export async function customizeCms(cms: CMS) {
 
 async function registerMdxWidget(cms: CMS) {
   const mdx = await import('netlify-cms-widget-mdx')
-
-  const scope = {}
 
   const preview = mdx.setupPreview({
     components,

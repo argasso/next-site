@@ -6,17 +6,19 @@ import {
   InferGetStaticPropsType,
 } from 'next'
 import { firstParameter, getContent, listSlugs } from '../../lib/markdownReader'
-import { MdxContent } from '../../components/MdxContent'
+// import { MdxContent } from '../../components/MdxContent'
 import { Book } from '../../src/types/netlify-types'
-import { serialize } from 'next-mdx-remote/serialize'
 import bookCollection from '../../src/cms/collections/bookCollection'
 import { BookDetails } from '../../components/BookDetails'
+import { bundleMDXFile } from 'mdx-bundler'
+import { MdxComponent } from '../../components/mdx/MdxComponent'
+import { join } from 'path'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const extension = bookCollection.extension || 'md'
 
-const BookPage: React.FC<Props> = ({ bookData, mdxSource, attributes }) => {
+const BookPage: React.FC<Props> = ({ bookData, attributes, mdxSource }) => {
   if (!bookData) return <></>
   const { data: book } = bookData
   return (
@@ -79,7 +81,8 @@ const BookPage: React.FC<Props> = ({ bookData, mdxSource, attributes }) => {
               .filter((b) => b != null)
               .join(', ')}
           </p>
-          <MdxContent source={mdxSource}></MdxContent>
+          <MdxComponent code={mdxSource} />
+          {/* <MdxContent source={mdxSource} /> */}
           <BookDetails attributes={attributes}></BookDetails>
           <div className="flex border-t-2 pt-5 mt-5 border-gray-200">
             <span className="title-font font-medium text-2xl text-gray-900">
@@ -117,9 +120,14 @@ export const getStaticProps = async (
   const slug = firstParameter(context.params?.slug)
   const bookData = slug ? getContent('boecker', slug) : undefined
   const title = bookData?.data.title
-  const content = await import(`../../content/boecker/${slug}.${extension}`)
-  const attributes: Book = content.attributes
-  const mdxSource = await serialize(content.body)
+  // const content = await import(`../../content/boecker/${slug}.${extension}`)
+  // const attributes: Book = content.attributes
+  // const mdxSource = await serialize(content.body)
+  const content = await bundleMDXFile(
+    join(process.cwd(), 'content/boecker', `${slug}.${extension}`)
+  )
+  const attributes: Book = content.frontmatter as Book
+  const mdxSource = content.code
 
   return { props: { bookData, title, mdxSource, attributes }, notFound: !slug }
 }

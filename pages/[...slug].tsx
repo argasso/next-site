@@ -3,11 +3,9 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next'
-import { sep } from 'path'
+import { sep, join } from 'path'
 import { BookContent, getFiles, listContent } from '../lib/markdownReader'
 import { Category } from '../src/types/netlify-types'
-import { serialize } from 'next-mdx-remote/serialize'
-import { MdxContent } from '../components/MdxContent'
 import BookCard from '../components/BookCard'
 import { getLayout } from '../components/layouts/DefaultLayout'
 import { NextSeo } from 'next-seo'
@@ -24,10 +22,12 @@ import { SortOnDateNewest } from '../src/filter/SortOnDateNewest'
 import { SortOnDateOldest } from '../src/filter/SortOnDateOldest'
 import { asArray } from '../lib/utils'
 import NextLink from 'next/link'
+import { bundleMDXFile } from 'mdx-bundler'
+import { MdxComponent } from '../components/mdx/MdxComponent'
 
 function MenysidorPage({
   attributes,
-  mdxSource,
+  code,
   books,
   categories,
   subCategories,
@@ -41,24 +41,6 @@ function MenysidorPage({
     setFilters([bookCategoryFilter, bookBindingFilter])
   }, [categories])
 
-  // const filteredBooks = useMemo(() => {
-  //   const bookBindingFilter = new BookBindingFilter()
-  //   const bookCategoryFilter = new BookCategoryFilter(categorySlugs)
-  //   return new FilteredItems<BookContent>(books || [], [
-  //     bookCategoryFilter,
-  //     bookBindingFilter,
-  //   ])
-  // }, [books, router.query])
-
-  //const slug = asArray(router.query['slug'])
-  // const subCategories = categories
-  //   .filter((c) => c.length === slug.length + 1)
-  //   .filter((c) => c.join('/').startsWith(slug.join('/') + '/'))
-  //   .map((c) => ({ title: unSlug(c[slug.length]), slug: c.join('/') }))
-
-  //console.log(subCategories)
-  //console.log('SLUGGGGG')
-
   const sorters = [new SortOnDateNewest(), new SortOnDateOldest()]
   return (
     <>
@@ -70,7 +52,7 @@ function MenysidorPage({
         <div className="flex-auto">
           <H1>{attributes.title}</H1>
           <div className="max-w-3xl">
-            <MdxContent source={mdxSource}></MdxContent>
+            <MdxComponent code={code} />
           </div>
           {attributes.image && (
             <div>
@@ -142,9 +124,16 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   //const params = ctx.params
   const slug = asArray(params?.slug)
   const path = slug.join(sep)
-  const content = await import(`../content/kategorier/${path}/index.mdx`)
-  const attributes: Category = content.attributes
-  const mdxSource = await serialize(content.body)
+  // const content = await import(`../content/kategorier/${path}/index.mdx`)
+  // const attributes: Category = content.attributes
+  // console.log(process.cwd())
+  const content = await bundleMDXFile(
+    join(process.cwd(), 'content/kategorier', path, 'index.mdx')
+  )
+  // const content = await bundleMDXFile('content/kategorier/boecker/index.mdx')
+  const attributes: Category = content.frontmatter as Category
+  const code = content.code
+  // const mdxSource = await serialize(content.body)
 
   const books =
     slug[0] === 'boecker'
@@ -164,10 +153,10 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       .filter((c) => c.length === slug.length + 1)
       .filter((c) => c.join(sep).startsWith(slug.join(sep) + sep))
       .map(async (c) => {
-        console.log(
-          'importing',
-          `../content/kategorier/${c.join(sep)}/index.mdx`
-        )
+        // console.log(
+        //   'importing',
+        //   `../content/kategorier/${c.join(sep)}/index.mdx`
+        // )
         const content = await import(
           `../content/kategorier/${c.join(sep)}/index.mdx`
         )
@@ -179,7 +168,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   //.map((c) => ({ title: unSlug(c[slug.length]), slug: c.join(sep) }))
 
   return {
-    props: { attributes, mdxSource, books, categories, subCategories },
+    props: { attributes, books, code, categories, subCategories },
   }
   //console.log('NOT FOUND in [...slug] ... slug:', slug)
   // return {
