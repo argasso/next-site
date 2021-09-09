@@ -4,6 +4,7 @@ import {
   InferGetStaticPropsType,
 } from 'next'
 import { sep, join } from 'path'
+import fs from 'fs'
 import { BookContent, getFiles, listContent } from '../lib/markdownReader'
 import { Category } from '../src/types/netlify-types'
 import BookCard from '../components/BookCard'
@@ -22,12 +23,15 @@ import { SortOnDateNewest } from '../src/filter/SortOnDateNewest'
 import { SortOnDateOldest } from '../src/filter/SortOnDateOldest'
 import { asArray } from '../lib/utils'
 import NextLink from 'next/link'
-import { bundleMDXFile } from 'mdx-bundler'
-import { MdxComponent } from '../components/mdx/MdxComponent'
+// import { bundleMDXFile } from 'mdx-bundler'
+// import { MdxComponent } from '../components/mdx/MdxComponent'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MdxContent } from '../components/mdx/MdxContent'
+import matter from 'gray-matter'
 
 function MenysidorPage({
   attributes,
-  code,
+  mdxSource,
   books,
   categories,
   subCategories,
@@ -52,7 +56,8 @@ function MenysidorPage({
         <div className="flex-auto">
           <H1>{attributes.title}</H1>
           <div className="max-w-3xl">
-            <MdxComponent code={code} />
+            {/* <MdxComponent code={mdxSource} /> */}
+            <MdxContent source={mdxSource} />
           </div>
           {attributes.image && (
             <div>
@@ -124,16 +129,22 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   //const params = ctx.params
   const slug = asArray(params?.slug)
   const path = slug.join(sep)
-  // const content = await import(`../content/kategorier/${path}/index.mdx`)
-  // const attributes: Category = content.attributes
-  // console.log(process.cwd())
-  const content = await bundleMDXFile(
-    join(process.cwd(), 'content/kategorier', path, 'index.mdx')
+  const content = fs.readFileSync(
+    join(process.cwd(), 'content', 'kategorier', path, 'index.mdx'),
+    'utf8'
   )
+  const { data, content: body } = matter(content)
+  const attributes: Category = data as Category
+  const mdxSource = await serialize(body)
+  //const content = await import(`../content/kategorier/${path}/index.mdx`)
+  //const attributes: Category = content.attributes
+  //const mdxSource = await serialize(content.body)
+  // const content = await bundleMDXFile(
+  //   join(process.cwd(), 'content/kategorier', path, 'index.mdx')
+  // )
   // const content = await bundleMDXFile('content/kategorier/boecker/index.mdx')
-  const attributes: Category = content.frontmatter as Category
-  const code = content.code
-  // const mdxSource = await serialize(content.body)
+  // const attributes: Category = content.frontmatter as Category
+  //const code = content.code
 
   const books =
     slug[0] === 'boecker'
@@ -168,7 +179,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   //.map((c) => ({ title: unSlug(c[slug.length]), slug: c.join(sep) }))
 
   return {
-    props: { attributes, books, code, categories, subCategories },
+    props: { attributes, books, mdxSource, categories, subCategories },
   }
   //console.log('NOT FOUND in [...slug] ... slug:', slug)
   // return {

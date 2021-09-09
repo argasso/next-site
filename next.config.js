@@ -3,15 +3,15 @@ const path = require('path')
 
 module.exports = {
   // pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx', 'md'],
-  env: {
-    ESBUILD_BINARY_PATH: path.join(
-      process.cwd(),
-      'node_modules',
-      'esbuild',
-      'bin',
-      'esbuild'
-    ),
-  },
+  // env: {
+  //   ESBUILD_BINARY_PATH: path.join(
+  //     process.cwd(),
+  //     'node_modules',
+  //     'esbuild',
+  //     'bin',
+  //     'esbuild'
+  //   ),
+  // },
   target: 'serverless',
   images: {
     domains: [siteconfig.domain],

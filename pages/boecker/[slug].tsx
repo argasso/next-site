@@ -10,9 +10,14 @@ import { firstParameter, getContent, listSlugs } from '../../lib/markdownReader'
 import { Book } from '../../src/types/netlify-types'
 import bookCollection from '../../src/cms/collections/bookCollection'
 import { BookDetails } from '../../components/BookDetails'
-import { bundleMDXFile } from 'mdx-bundler'
-import { MdxComponent } from '../../components/mdx/MdxComponent'
-import { join } from 'path'
+// import { MdxComponent } from '../../components/mdx/MdxComponent'
+import { MdxContent } from '../../components/mdx/MdxContent'
+// import { join } from 'path'
+// import { bundleMDXFile } from 'mdx-bundler'
+import { serialize } from 'next-mdx-remote/serialize'
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -81,8 +86,8 @@ const BookPage: React.FC<Props> = ({ bookData, attributes, mdxSource }) => {
               .filter((b) => b != null)
               .join(', ')}
           </p>
-          <MdxComponent code={mdxSource} />
-          {/* <MdxContent source={mdxSource} /> */}
+          {/* <MdxComponent code={mdxSource} /> */}
+          <MdxContent source={mdxSource} />
           <BookDetails attributes={attributes}></BookDetails>
           <div className="flex border-t-2 pt-5 mt-5 border-gray-200">
             <span className="title-font font-medium text-2xl text-gray-900">
@@ -123,11 +128,21 @@ export const getStaticProps = async (
   // const content = await import(`../../content/boecker/${slug}.${extension}`)
   // const attributes: Book = content.attributes
   // const mdxSource = await serialize(content.body)
-  const content = await bundleMDXFile(
-    join(process.cwd(), 'content/boecker', `${slug}.${extension}`)
+  // const content = await bundleMDXFile(
+  //   join(process.cwd(), 'content/boecker', `${slug}.${extension}`)
+  // )
+  // const attributes: Book = content.frontmatter as Book
+  // const mdxSource = content.code
+  const content = fs.readFileSync(
+    path.join(process.cwd(), 'content', 'boecker', `${slug}.${extension}`),
+    'utf8'
   )
-  const attributes: Book = content.frontmatter as Book
-  const mdxSource = content.code
+
+  const { data, content: body } = matter(content)
+  const attributes: Book = data as Book
+  const mdxSource = await serialize(body)
+  // const mdxSource: string = ''
+  // const attributes = {}
 
   return { props: { bookData, title, mdxSource, attributes }, notFound: !slug }
 }
